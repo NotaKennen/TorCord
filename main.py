@@ -13,7 +13,7 @@ import keyboard
 
 ### Global vars ###
 # Version
-VERSION = 0.1
+VERSION = 0.2
 
 # Default username
 username = "[NO-USERNAME-FOUND]"
@@ -71,13 +71,11 @@ def torRequest(url: str, headers: dict = None, data=None, mode="get"):
         return(session.post(url, headers=headers, data=data))
 
 def bash(command: str, capture=True):
-    # Run the command
-    result = subprocess.run(command, shell=True, capture_output=capture, text=True)
-    return result
+    return subprocess.run(command, shell=True, capture_output=capture, text=True)
 
 def getTor():
     # Get Tor location
-    torLocation = bash('where tor')
+    torLocation = bash('where firefox')
     if torLocation.stderr == "INFO: Could not find files for the given pattern(s).\n":
         print(f"{ERROR} Tor is not installed (or not in Path!)")
         time.sleep(10)
@@ -254,7 +252,7 @@ try:
     with open("config.json", "r") as file:
         config = json.load(file)
 except FileNotFoundError:
-    print(f"{ERROR} config.json not found!")
+    print(f"{ERROR} config.json does not exist!")
     with open("config.json", "w") as file:
         json.dump({"headless": True}, file)  # default config
     config = {"headless": True}
